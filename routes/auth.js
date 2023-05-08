@@ -35,7 +35,7 @@ router.get(
 		const token = generateJWT(req.user);
 		console.log('token', token);
 		res.cookie('x-auth-cookie', token);
-		res.redirect(clientUrl);
+		res.redirect(`${process.env.CLIENT_URL}`);
 	  },
 );
 
