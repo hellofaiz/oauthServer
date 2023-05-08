@@ -23,7 +23,7 @@ router.get("/login/failed", (req, res) => {
 	});
 });
 router.get("/google", passport.authenticate("google", ["openid", "profile", "email"]));
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+// const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 
 router.get(
 	'/google/callback',
@@ -35,7 +35,7 @@ router.get(
 		const token = generateJWT(req.user);
 		console.log('token', token);
 		res.cookie('x-auth-cookie', token);
-		res.redirect(`${process.env.CLIENT_URL}`);
+		res.redirect(`${process.env.CLIENT_URL}/restore`);
 	  },
 );
 
