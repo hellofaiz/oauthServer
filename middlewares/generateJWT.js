@@ -8,7 +8,13 @@ module.exports.generateJWT = ({ username, email, name, avatar }) => {
       username,
       email,
       name,
-      avatar,
+      avatar:string,
+      profile: {
+        name,
+        email,
+        username,
+        avatar:string,
+      }
     },
     secretOrKey,
   );
