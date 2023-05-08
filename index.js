@@ -65,11 +65,11 @@ app.use(session({
   secret: `${process.env.CLIENT_SECRET}`,
   resave: false,
   saveUninitialized: false,
-  // cookie: {
-  //   httpOnly: false,
-  //   secure: false,
-  //   sameSite: 'none',
-  // }
+  cookie: {
+    httpOnly: false,
+    secure: false,
+    sameSite: 'none',
+  }
 }));
 
 app.use(passport.initialize());
