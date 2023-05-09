@@ -12,7 +12,7 @@ const restorePhotoRoute = require("./routes/restorePhoto");
 const motionBlurPhotoRoute = require("./routes/motionBlur");
 const passportStrategy = require("./passport");
 // const cookieParser = require("cookie-parser");
-const useragent = require('useragent');
+// const useragent = require('useragent');
 // start
 const app = express();
 // app.use(express.static('public'));
@@ -20,23 +20,23 @@ const app = express();
 
 // app.use(express.static(path.join(__dirname, 'build')));
 
-function customContentSecurityPolicy(req, res, next) {
-  const userAgent = req.headers['user-agent'];
-  const agent = useragent.parse(userAgent);
-  const isSafari = agent.family === 'Safari';
+// function customContentSecurityPolicy(req, res, next) {
+//   const userAgent = req.headers['user-agent'];
+//   const agent = useragent.parse(userAgent);
+//   const isSafari = agent.family === 'Safari';
 
-  // Define your Content-Security-Policy directives here
-  const baseCsp = "default-src 'self'; script-src 'self'";
+//   // Define your Content-Security-Policy directives here
+//   const baseCsp = "default-src 'self'; script-src 'self'";
 
-  if (isSafari) {
-    res.setHeader('Content-Security-Policy', baseCsp);
-  } else {
-    res.setHeader('Content-Security-Policy', `${baseCsp}; require-trusted-types-for 'script'`);
-  }
+//   if (isSafari) {
+//     res.setHeader('Content-Security-Policy', baseCsp);
+//   } else {
+//     res.setHeader('Content-Security-Policy', `${baseCsp}; require-trusted-types-for 'script'`);
+//   }
 
-  next();
-}
-app.use(customContentSecurityPolicy);
+//   next();
+// }
+// app.use(customContentSecurityPolicy);
 
 
 app.set('trust proxy', 1); // Add this line to enable the trust proxy setting
@@ -44,13 +44,13 @@ app.set('trust proxy', 1); // Add this line to enable the trust proxy setting
 
 
 // app.use(cookieParser());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`);
+//   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+//   res.setHeader('Access-Control-Allow-Credentials', 'true');
+//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//   next();
+// });
 
 app.use(
   cors({
@@ -65,11 +65,11 @@ app.use(session({
   secret: `${process.env.CLIENT_SECRET}`,
   resave: false,
   saveUninitialized: false,
-  // cookie: {
-  //   httpOnly: false,
-  //   secure: false,
-  //   sameSite: 'none',
-  // }
+  cookie: {
+    httpOnly: false,
+    secure: true,
+    sameSite: 'none',
+  }
 }));
 
 app.use(passport.initialize());
