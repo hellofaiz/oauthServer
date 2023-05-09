@@ -45,6 +45,22 @@ router.get(
 	// },
 );
 
+router.get(
+	'/google/callback',
+	passport.authenticate('google', {
+		successRedirect: `${process.env.CLIENT_URL}`,
+		successRedirect: `${process.env.CLIENT_URL}`,
+		failureRedirect: '/login/failed',
+		// session: false,
+	}),
+	// (req, res) => {
+	// 	const token = generateJWT(req.user);
+	// 	console.log('token', token);
+	// 	res.cookie('token', token, { maxAge: 900000, httpOnly: true, secure: false, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
+	// 	res.redirect("https://quizzical-dltk.onrender.com");
+	// },
+);
+
 
 router.get('/logout', function (req, res) {
 	req.logout((err) => {
