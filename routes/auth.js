@@ -4,16 +4,19 @@ const passport = require("passport");
 const { generateJWT } = require('../middlewares/generateJWT');
 // const path = require('path');
 // router.use(express.static(path.join(__dirname, 'build')));
+const jwt = require("jsonwebtoken");
 
 router.get("/login/success", (req, res) => {
+	console.log(req.user);
+
 	if (req.user) {
 		const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });
 		res.status(200).json({
 			error: false,
 			message: "Successfully Loged In",
-			user: token,
+			user: req.user,
+			token: token,
 		});
-
 	} else {
 		res.status(403).json({ error: true, message: "Not Authorized" });
 	}
@@ -30,8 +33,8 @@ router.get("/google", passport.authenticate("google", ["openid", "profile", "ema
 router.get(
 	'/google/callback',
 	passport.authenticate('google', {
-		failureRedirect: '/',
-		successRedirect: `${process.env.CLIENT_URL}`
+		successRedirect: `${process.env.CLIENT_URL}`,
+		failureRedirect: '/login/failed',
 		// session: false,
 	}),
 	// (req, res) => {
