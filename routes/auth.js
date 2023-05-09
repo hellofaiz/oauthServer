@@ -6,6 +6,10 @@ const { generateJWT } = require('../middlewares/generateJWT');
 // router.use(express.static(path.join(__dirname, 'build')));
 const jwt = require("jsonwebtoken");
 
+
+// Enable CORS
+router.use(cors());
+
 router.get("/login/success", (req, res) => {
 	// console.log(req.user);
 
@@ -33,22 +37,6 @@ router.get("/google", passport.authenticate("google", ["openid", "profile", "ema
 router.get(
 	'/google/callback',
 	passport.authenticate('google', {
-		successRedirect: `${process.env.CLIENT_URL}`,
-		failureRedirect: '/login/failed',
-		// session: false,
-	}),
-	// (req, res) => {
-	// 	const token = generateJWT(req.user);
-	// 	console.log('token', token);
-	// 	res.cookie('token', token, { maxAge: 900000, httpOnly: true, secure: false, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
-	// 	res.redirect("https://quizzical-dltk.onrender.com");
-	// },
-);
-
-router.get(
-	'/google/callback',
-	passport.authenticate('google', {
-		successRedirect: `${process.env.CLIENT_URL}`,
 		successRedirect: `${process.env.CLIENT_URL}`,
 		failureRedirect: '/login/failed',
 		// session: false,
