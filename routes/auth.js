@@ -31,14 +31,14 @@ router.get(
 	'/google/callback',
 	passport.authenticate('google', {
 		failureRedirect: '/',
-		session: false,
+		// session: false,
 	}),
-	(req, res) => {
-		const token = generateJWT(req.user);
-		console.log('token', token);
-		res.cookie('token', token, { maxAge: 900000, httpOnly: true, secure: false, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
-		res.redirect("https://quizzical-dltk.onrender.com");
-	},
+	// (req, res) => {
+	// 	const token = generateJWT(req.user);
+	// 	console.log('token', token);
+	// 	res.cookie('token', token, { maxAge: 900000, httpOnly: true, secure: false, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
+	// 	res.redirect("https://quizzical-dltk.onrender.com");
+	// },
 );
 
 
