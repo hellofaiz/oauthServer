@@ -40,9 +40,6 @@ app.use(customContentSecurityPolicy);
 
 
 app.set('trust proxy', 1); // Add this line to enable the trust proxy setting
-
-
-
 app.use(cookieParser());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`|| `${process.env.CLIENT_URL}/restore`|| `${process.env.CLIENT_URL}/motionBlur`|| `${process.env.CLIENT_URL}/auth/google/callback`|| `${process.env.CLIENT_URL}/login`);
@@ -51,6 +48,9 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+
+
+
 
 app.use(
   cors({
