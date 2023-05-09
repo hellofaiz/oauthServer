@@ -7,20 +7,64 @@ const { generateJWT } = require('../middlewares/generateJWT');
 const jwt = require("jsonwebtoken");
 
 
-router.get("/login/success", (req, res) => {
-	// console.log(req.user);
+// router.get("/login/success", (req, res) => {
+// console.log(req.user);
+// if (req.user) {
+// 	const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });
+// 	res.status(200).json({
+// 		error: false,
+// 		message: "Successfully Loged In",
+// 		user: req.user,
+// 		token: token,
+// 	});
+// } else {
+// 	res.status(403).json({ error: true, message: "Not Authorized" });
+// }
+// });
+// =============================================================================
+// Sign Token
+// =============================================================================
+var jwt = require('jsonwebtoken');
 
-	if (req.user) {
-		const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });
-		res.status(200).json({
-			error: false,
-			message: "Successfully Loged In",
-			user: req.user,
-			token: token,
+router.post('/login/success', passport.authenticate('local'), (req, res) => {
+	jwt.sign({ user: req.user }, 'StRoNGs3crE7', (err, token) => {
+		if (err) return res.json(err);
+
+		// Send Set-Cookie header
+		res.cookie('jwt', token, {
+			httpOnly: false,
+			sameSite: 'none',
+			signed: true,
+			secure: true
 		});
-	} else {
-		res.status(403).json({ error: true, message: "Not Authorized" });
-	}
+
+		// Return json web token
+		return res.json({
+			jwt: token
+		});
+	});
+});
+// =============================================================================
+// Login route with any Passport authentication strategy
+// =============================================================================
+// Passport provides us the authenticated user in the request
+router.post('/login', passport.authenticate('local', {
+	session: false
+}), (req, res) => {
+	// Create and sign json web token with the user as payload
+	jwt.sign({
+		user: req.user
+	}, config.jwt.secret, config.jwt.options, (err, token) => {
+		if (err) return res.status(500).json(err);
+
+		// Send the Set-Cookie header with the jwt to the client
+		res.cookie('jwt', token, config.jwt.cookie);
+
+		// Response json with the jwt
+		return res.json({
+			jwt: token
+		});
+	});
 });
 router.get("/login/failed", (req, res) => {
 	res.status(401).json({

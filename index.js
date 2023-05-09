@@ -19,7 +19,7 @@ const app = express();
 
 
 // app.use(express.static(path.join(__dirname, 'build')));
-
+app.use(cookieParser(config.jwt.secret));
 function customContentSecurityPolicy(req, res, next) {
   const userAgent = req.headers['user-agent'];
   const agent = useragent.parse(userAgent);
@@ -40,9 +40,9 @@ app.use(customContentSecurityPolicy);
 
 
 app.set('trust proxy', 1); // Add this line to enable the trust proxy setting
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`|| `${process.env.CLIENT_URL}/restore`|| `${process.env.CLIENT_URL}/motionBlur`|| `${process.env.CLIENT_URL}/auth/google/callback`|| `${process.env.CLIENT_URL}/login`);
+  res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore` || `${process.env.CLIENT_URL}/motionBlur` || `${process.env.CLIENT_URL}/auth/google/callback` || `${process.env.CLIENT_URL}/login`);
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore`|| `${process.env.CLIENT_URL}/motionBlur`|| `${process.env.CLIENT_URL}/auth/google/callback`|| `${process.env.CLIENT_URL}/login`,
+    origin: `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore` || `${process.env.CLIENT_URL}/motionBlur` || `${process.env.CLIENT_URL}/auth/google/callback` || `${process.env.CLIENT_URL}/login`,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -75,6 +75,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 // google Auth 
+// =============================================================================
+// Authenticate Requests
+// =============================================================================
+var express = require('express');
+
+app.use('/api/v1', passport.authenticate('jwt-cookiecombo', {
+  session: false
+}), (req, res, next) => {
+  return next();
+});
 app.use("/auth", authRoute);
 
 // Replicate Models
