@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: `${process.env.CLIENT_URL}`,
+    origin: `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore`|| `${process.env.CLIENT_URL}/motionBlur`|| `${process.env.CLIENT_URL}/auth/google/callback`|| `${process.env.CLIENT_URL}/login`,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
     allowedHeaders: "Content-Type,Authorization"
