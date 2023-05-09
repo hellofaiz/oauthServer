@@ -7,7 +7,7 @@ const { generateJWT } = require('../middlewares/generateJWT');
 const jwt = require("jsonwebtoken");
 
 router.get("/login/success", (req, res) => {
-	console.log(req.user);
+	// console.log(req.user);
 
 	if (req.user) {
 		const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });
