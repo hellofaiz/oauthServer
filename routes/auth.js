@@ -7,9 +7,6 @@ const { generateJWT } = require('../middlewares/generateJWT');
 const jwt = require("jsonwebtoken");
 
 
-// Enable CORS
-router.use(cors());
-
 router.get("/login/success", (req, res) => {
 	// console.log(req.user);
 
