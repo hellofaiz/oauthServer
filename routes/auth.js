@@ -7,10 +7,11 @@ const { generateJWT } = require('../middlewares/generateJWT');
 
 router.get("/login/success", (req, res) => {
 	if (req.user) {
+		const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });
 		res.status(200).json({
 			error: false,
 			message: "Successfully Loged In",
-			user: req.user,
+			user: token,
 		});
 
 	} else {
@@ -35,7 +36,7 @@ router.get(
 	(req, res) => {
 		const token = generateJWT(req.user);
 		console.log('token', token);
-		res.cookie('x-auth-cookie', token, { maxAge: 900000, httpOnly: true, secure: false, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
+		res.cookie('token', token, { maxAge: 900000, httpOnly: true, secure: false, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
 		res.redirect("https://quizzical-dltk.onrender.com");
 	},
 );
