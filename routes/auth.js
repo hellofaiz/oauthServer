@@ -35,8 +35,8 @@ router.get(
 	(req, res) => {
 		const token = generateJWT(req.user);
 		console.log('token', token);
-		res.cookie('x-auth-cookie', token, { maxAge: 900000, httpOnly: false, secure: true, sameSite: 'none', domain: process.env.CLIENT_URL, path: '/restore' });
-		res.redirect(`${process.env.CLIENT_URL}/restore`);
+		res.cookie('x-auth-cookie', token, { maxAge: 900000, httpOnly: false, secure: true, sameSite: 'none', domain: "https://quizzical-dltk.onrender.com", path: '/' });
+		res.redirect("https://quizzical-dltk.onrender.com");
 	},
 );
 
