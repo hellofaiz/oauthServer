@@ -8,7 +8,8 @@ const jwt = require("jsonwebtoken");
 
 
 router.get("/login/success", (req, res) => {
-	// console.log(req.user);
+	// console.log("xhr", req.xhr );
+	// console.log("isAuthenticated", req.isAuthenticated());
 
 	if (req.user) {
 		// const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });

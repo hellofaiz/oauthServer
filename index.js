@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 const fs = require('fs');
 const axios = require('axios');
@@ -5,7 +6,6 @@ const cors = require('cors');
 // const path = require('path');
 // passport
 const session = require('express-session');
-require("dotenv").config();
 const passport = require("passport");
 const authRoute = require("./routes/auth");
 const restorePhotoRoute = require("./routes/restorePhoto");
@@ -42,7 +42,7 @@ app.use(customContentSecurityPolicy);
 app.set('trust proxy', 1); // Add this line to enable the trust proxy setting
 app.use(cookieParser());
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}`|| `${process.env.CLIENT_URL}/restore`|| `${process.env.CLIENT_URL}/motionBlur`|| `${process.env.CLIENT_URL}/auth/google/callback`|| `${process.env.CLIENT_URL}/login`);
+  res.setHeader('Access-Control-Allow-Origin', `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore` || `${process.env.CLIENT_URL}/motionBlur` || `${process.env.CLIENT_URL}/auth/google/callback` || `${process.env.CLIENT_URL}/login`);
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -54,23 +54,28 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore`|| `${process.env.CLIENT_URL}/motionBlur`|| `${process.env.CLIENT_URL}/auth/google/callback`|| `${process.env.CLIENT_URL}/login`,
+    origin: `${process.env.CLIENT_URL}` || `${process.env.CLIENT_URL}/restore` || `${process.env.CLIENT_URL}/motionBlur` || `${process.env.CLIENT_URL}/auth/google/callback` || `${process.env.CLIENT_URL}/login`,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['X-Requested-With', 'XMLHttpRequest', 'Access-Control-Allow-Origin', 'Content-Type', 'Accept', 'Authorization', 'Origin'],
   })
 );
 
 app.use(session({
   secret: `${process.env.CLIENT_SECRET}`,
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
     httpOnly: false,
     secure: true,
-    sameSite: 'None',
+    sameSite: 'none',
   }
 }));
+// app.get("/profile",
+//   passport.authenticate("cookie", { session: false }),
+//   function (req, res) {
+//     res.json(req.user);
+//   });
 
 app.use(passport.initialize());
 app.use(passport.session());
