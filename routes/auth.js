@@ -11,7 +11,7 @@ router.get("/login/success", (req, res) => {
 	// console.log("xhr", req.xhr );
 	// console.log("isAuthenticated", req.isAuthenticated());
 
-	if (req.user) {
+	if (req.xhr && req.isAuthenticated()) {
 		// const token = jwt.sign({ user: req.user }, process.env.JWT_SECRET_DEV, { expiresIn: '1h' });
 		res.status(200).json({
 			error: false,
